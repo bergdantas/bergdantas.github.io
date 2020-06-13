@@ -69,6 +69,13 @@ section.txtInicial{
 
 }
 
+section.txtDiario{
+    margin: 10px;
+    padding: 10px;
+    text-align: justify;
+     
+}
+
 section.secContato{
 margin: 0 auto;
 width: 70%; /* Valor da Largura */
