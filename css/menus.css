@@ -10,7 +10,7 @@ nav {
     background-color: #4d4d4d;
 }
 
-nav > a {
+nav>a {
     text-decoration: none;
     color: #f1f1f1;
     font-weight: 700;
@@ -40,7 +40,7 @@ nav ul li a {
     color: #f1f1f1;
 }
 
-nav a:hover{
+nav a:hover {
     color: #d0d0d0;
 }
 
@@ -53,32 +53,31 @@ footer {
     width: 100%;
 }
 
-section.fotoInicial{
-  width: 35%;
-  float: left;
-  padding-right: 60px;
-  padding-top:5px
+section.fotoInicial {
+    width: 35%;
+    float: left;
+    padding-right: 60px;
+    padding-top: 5px
 }
 
-section.txtInicial{
-  width: 52%;
-  float: left;
-  margin: 10px;
-  padding: 10px;
-  text-align: justify;
-
-}
-
-section.txtDiario{
+section.txtInicial {
+    width: 52%;
+    float: left;
     margin: 10px;
     padding: 10px;
     text-align: justify;
-     
 }
 
-section.secContato{
-margin: 0 auto;
-width: 70%; /* Valor da Largura */
+section.txtDiario {
+    margin: 10px;
+    padding: 10px;
+    text-align: justify;
+}
+
+section.secContato {
+    margin: 0 auto;
+    width: 70%;
+    /* Valor da Largura */
 }
 
 @media screen and (min-width: 768px) {
@@ -86,7 +85,6 @@ width: 70%; /* Valor da Largura */
         flex-direction: row;
         justify-content: space-around;
     }
-
     nav ul {
         flex-direction: row;
         width: 70%;
