@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Berg Dantas</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+            <div class="container">
+                <a class="navbar-brand" href="#">Berg Dantas</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="../index.html">Início</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Aulas</a></li>
+                        <li class="nav-item"><a class="nav-link" href="projetos.html">Projetos</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Jiu-Jitsu</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Contato</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+        <header id="inicio" class="hero">
+            <div class="container text-center mt-5">
+                <h1>Projeto Genius</h1>
+                
+                
+                <!-- Centralização do vídeo -->
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/EsoZhK9PyJc?si=Xa5-7pezOaIalG0P" 
+                        title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                    </iframe>
+                </div>
+
+                <!-- Centralização da imagem -->
+                <img src="../imagens/arduino genius.png" class="img-fluid mt-3" style="max-width: 50%;" />
+
+                <h2 class="mt-4">Código:</h2>
+                <div class="text-start">
+                    <pre>
+                        <code>
+/***************** Variáveis globais *******************/
+int sequencia[32] = {};
+int botoes[4] = {8, 9, 10, 11};
+int leds[4] = {2, 3, 4, 5};
+int tons[4] = {262, 294, 330, 349};
+int rodada = 0;
+int passo = 0;
+bool game_over = false;
+
+void setup() {
+    // Leds
+    pinMode(2, OUTPUT);
+    pinMode(3, OUTPUT);
+    pinMode(4, OUTPUT);
+    pinMode(5, OUTPUT);
+
+    // Buzzer
+    pinMode(7, OUTPUT);
+
+    // Botões
+    pinMode(8, INPUT);
+    pinMode(9, INPUT);
+    pinMode(10, INPUT);
+    pinMode(11, INPUT);
+}
+
+void loop() {
+    proximaRodada();
+    reproduzirSequencia();
+    aguardarJogador();
+    
+    // Estrutura usada para reiniciar todas as variáveis (novo jogo)
+    if (game_over == true) {
+        sequencia[32] = {};
+        rodada = 0;
+        passo = 0;
+        game_over = false;
+    }
+    delay(1000);
+}
+
+/************************* Funções **************************/
+void proximaRodada() {
+    RandomSeed(analogRead(A0));
+    int sorteio = random(4);
+    sequencia[rodada] = sorteio;
+    rodada = rodada + 1;
+}
+
+void reproduzirSequencia() {
+    for (int i = 0; i < rodada; i++) {
+        tone(7, tons[sequencia[i]]);
+        digitalWrite(leds[sequencia[i]], HIGH);
+        delay(500);
+        noTone(7);
+        digitalWrite(leds[sequencia[i]], LOW);
+        delay(100);
+    }
+}
+
+void aguardarJogador() {
+    int botao_pressionado = 0;
+    for (int i = 0; i < rodada; i++) {
+        bool jogada_efetuada = false;
+        while (!jogada_efetuada) {
+            for (int i = 0; i <= 3; i++) {
+                if (digitalRead(botoes[i]) == HIGH) {
+                    botao_pressionado = i;
+                    tone(7, tons[i]);
+                    digitalWrite(leds[i], HIGH);
+                    delay(300);
+                    digitalWrite(leds[i], LOW);
+                    noTone(7);
+                    jogada_efetuada = true;
+                }
+            }
+        }
+        // Verificar a jogada
+        if (sequencia[passo] != botao_pressionado) {
+            // Efeito luminoso/sonoro indicando que o jogador perdeu
+            for (int i = 0; i <= 3; i++) {
+                tone(7, 70);
+                digitalWrite(leds[i], HIGH);
+                delay(100);
+                digitalWrite(leds[i], LOW);
+                noTone(7);
+            }
+            game_over = true;
+            break;
+        }
+        passo = passo + 1;
+    }
+    passo = 0;
+}  
+                        </code>
+                    </pre>
+                </div>
+            </div>
+        </header>
+
+        <footer class="text-center py-4 bg-dark text-light">
+            <p>&copy; Berg Dantas, 2025</p>
+        </footer>
+    </body>
+</html>
